@@ -1,0 +1,18 @@
+{% extends 'tasks/base.html'%}
+
+{% block content %}
+    <div class="bg-body-tertiary border rounded-3 mt-3">
+        <h1><a class = 'nav-link' href="{% url 'task_detail' task.pk %}"> {{task.title}} </a></h1>
+        <h4><p class="nav-info">Post created: {{ task.task_created_date|timesince }} ago</p></h4>
+        <p>{{task.descript}}</p>
+        <img src="{{ task.task_image.url }}" alt="{{task.id}}">
+        {% if task.author == user or user.is_superuser %}
+            {% if task.deadline|timeuntil|slice:":1" == '0'%}
+                <p class="text-danger">Expired</p>
+            {% else %}
+                <a href="{% url 'task_update' task.pk %}"> Edit task </a>
+            {% endif %}
+            <a href="{% url 'task_delete' task.pk %}"> Delete task </a>
+        {% endif %}
+    </div>
+{% endblock %}

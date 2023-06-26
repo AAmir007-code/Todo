@@ -1,0 +1,45 @@
+{% extends 'tasks/base.html'%}
+
+{% block content %}
+        {% if user.is_authenticated %}
+
+        <div class="container">
+            <h2>Your tasks:</h2>
+            {% for task in tasks%}
+            {% if task.author == user %}
+                <div class="bg-body-tertiary border rounded-3 mt-3">
+                <a class = 'nav-link' href="{% url 'task_detail' task.pk %}"> {{task.title}} </a>
+                    <img src="{{ task.task_image.url }}" alt="{{task.id}}" >
+                    <p class="nav-info">Post created: {{ task.task_created_date|timesince }} ago</p>
+                    {% if task.deadline|timeuntil|slice:":1" == '0'%}
+                        <p class="text-danger">Expired</p>
+                    {% else %}
+                      <p class="nav-info">Until deadline: {{ task.deadline|timeuntil}} </p>
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endfor %}
+            <hr>
+        <h2>Other's tasks: </h2>
+        <ol>
+        {% for task in tasks %}
+            {% if task.author != user %}
+            <div class="bg-body-tertiary border rounded-3 mt-3">
+                <li><a class="nav-link" href="{% url 'task_detail' task.pk %}"> {{task.title}} </a> </li>
+            </div>
+            {% endif %}
+        {% endfor %}
+        </ol>
+        {% else %}
+            <div class="container">
+             <h2>All Posts: </h2>
+        <ol>
+        {% for task in tasks %}
+            <div class="bg-body-tertiary border rounded-3 mt-3">
+                <li><a class = 'nav-link' href="{% url 'task_detail' task.pk %}"> {{task.title}} </a> </li></div>
+        {% endfor %}
+            </div>
+        </ol>
+        {% endif %}
+        </div>
+{% endblock %}

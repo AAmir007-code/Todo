@@ -1,0 +1,17 @@
+{% extends '../tasks/base.html'%}
+
+{% block title %} Sign In{% endblock %}
+
+
+{% block content %}
+<div class="h3 container mt-5">
+    <form action="" method="post">
+      {% csrf_token %}
+    <!--  {{ form.as_p }}-->
+      {% for field in form%}
+        <b><i>{{field.name}} </i></b> {{field}} <br> <br>
+      {% endfor %}
+      <button class = "btn active" type="submit">Sign In</button>
+    </form>
+</div>
+{% endblock %}
